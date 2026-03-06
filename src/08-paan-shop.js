@@ -11,7 +11,7 @@
  * Functions:
  *
  *   1. createPaanOrder(basePaan, customizations)
- *      - Object.assign({}, basePaan, customizations) se NEW order object banao
+ *      - bOject.assign({}, basePaan, customizations) se NEW order object banao
  *      - Original basePaan ko mutate MAT karo!
  *      - Agar basePaan object nahi hai ya null hai, return {}
  *      - Agar customizations object nahi hai, sirf basePaan ki copy return karo
@@ -46,17 +46,35 @@
  *   updatePrices({meetha:30, saada:20}, 10)              // => {meetha:40, saada:30}
  */
 export function createPaanOrder(basePaan, customizations) {
-  // Your code here
+  if(typeof basePaan!=="object" || basePaan===null ||Array.isArray(basePaan))  return{};
+   if (typeof customizations !== "object" || customizations === null || Array.isArray(customizations)){
+      return Object.assign({},basePaan);
+   }
+   return Object.assign({},basePaan,customizations);
 }
 
 export function freezeMenu(menu) {
-  // Your code here
+  if(typeof menu!=="object" || menu===null || Array.isArray(menu)) return{};
+  return Object.freeze(menu);
 }
 
 export function updatePrices(menu, increase) {
-  // Your code here
+  if(typeof menu!=="object" || typeof increase!=="number" || menu === null ||Array.isArray(menu)) return{};
+  const entries=Object.entries(menu);
+  const updated=entries.map(([item,price])=>{
+     return [item,increase+price];
+  })
+  return Object.fromEntries(updated);
 }
 
 export function mergeDailySpecials(regularMenu, specialsMenu) {
-  // Your code here
+  if (typeof regularMenu !== "object" || regularMenu === null || Array.isArray(regularMenu)) {
+    regularMenu = {};
+  }
+
+  if (typeof specialsMenu !== "object" || specialsMenu === null || Array.isArray(specialsMenu)) {
+    specialsMenu = {};
+  }
+
+  return { ...regularMenu, ...specialsMenu };
 }
